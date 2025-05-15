@@ -1,90 +1,170 @@
+# env:
+#   contexts:
+#   - name: Default Context
+#     urls:
+#     - https://juice-shop.herokuapp.com
+#     includePaths:
+#     - https://juice-shop.herokuapp.com.*
+#     excludePaths:
+#     - https://juice-shop.herokuapp.com.*.css
+#     - https://juice-shop.herokuapp.com.*.ico
+#     - https://juice-shop.herokuapp.com.*.jpg
+#     - https://juice-shop.herokuapp.com.*.jpeg
+#     - https://juice-shop.herokuapp.com.*.png
+#     - https://juice-shop.herokuapp.com.*.svg
+#     - https://juice-shop.herokuapp.com.*.mp3
+#     - https://juice-shop.herokuapp.com.*.mp4
+#     - https://juice-shop.herokuapp.com.*.zip
+#     - https://juice-shop.herokuapp.com.*.woff
+#     - https://juice-shop.herokuapp.com.*.webp
+#     authentication:
+#       method: form
+#       parameters:
+#         loginPageUrl: https://juice-shop.herokuapp.com/#/login
+#         loginRequestUrl: https://juice-shop.herokuapp.com/#/login
+#         loginRequestBody: "Email={%username%}&Password={%password%}"
+#       verification:
+#         method: response
+#         loggedInRegex: <span _ngcontent-ng-c629514785=""> Logout </span>
+#         loggedOutRegex: <span class="mdc-button__label"> Log in </span>
+#         pollFrequency: 60
+#         pollUnits: requests
+#         pollUrl: ""
+#         pollPostData: ""
+#     sessionManagement:
+#       method: cookie
+#     technology: {}
+#     structure: {}
+#     users:
+#     - name: test
+#       credentials:
+#         password: test@123
+#         username: test@123.com
+#   parameters: {}
+# jobs:
+# - type: passiveScan-config
+#   parameters: {}
+#   rules:
+#   - name: Modern Web Application
+#     id: 10109
+#     threshold: "off"
+#   - name: Re-examine Cache-control Directives
+#     id: 10015
+#     threshold: "off"
+#   - name: Timestamp Disclosure
+#     id: 10096
+#     threshold: "off"
+#   - name: Strict-Transport-Security Header
+#     id: 10035
+#     threshold: "off"
+#   - name: Cross-Domain JavaScript Source File Inclusion
+#     id: 10017
+#     threshold: "off"
+#   - name: Cross-Domain Misconfiguration
+#     id: 10098
+#     threshold: "off"
+#   - name: Content Security Policy (CSP) Header Not Set
+#     id: 10038
+#     threshold: "off"
+# - type: spider
+#   parameters:
+#     context: Default Context
+#     user: test
+#     url: https://juice-shop.herokuapp.com
+#     parseDsStore: null
+# - type: spiderAjax
+#   parameters:
+#     context: Default Context
+#     user: test
+#     url: https://juice-shop.herokuapp.com
+#     maxDuration: 301
+#     browserId: null
+# - type: passiveScan-wait
+#   parameters: {}
+# - type: activeScan
+#   parameters:
+#     context: Default Context
+#     user: test
+#   policyDefinition:
+#     defaultStrength: medium
+#     defaultThreshold: medium
+
+
 env:
-  contexts:
-  - name: Default Context
-    urls:
-    - https://juice-shop.herokuapp.com
-    includePaths:
-    - https://juice-shop.herokuapp.com.*
-    excludePaths:
-    - https://juice-shop.herokuapp.com.*.css
-    - https://juice-shop.herokuapp.com.*.ico
-    - https://juice-shop.herokuapp.com.*.jpg
-    - https://juice-shop.herokuapp.com.*.jpeg
-    - https://juice-shop.herokuapp.com.*.png
-    - https://juice-shop.herokuapp.com.*.svg
-    - https://juice-shop.herokuapp.com.*.mp3
-    - https://juice-shop.herokuapp.com.*.mp4
-    - https://juice-shop.herokuapp.com.*.zip
-    - https://juice-shop.herokuapp.com.*.woff
-    - https://juice-shop.herokuapp.com.*.webp
-    authentication:
-      method: form
-      parameters:
-        loginPageUrl: https://juice-shop.herokuapp.com/#/login
-        loginRequestUrl: https://juice-shop.herokuapp.com/#/login
-        loginRequestBody: "Email={%username%}&Password={%password%}"
-      verification:
-        method: response
-        loggedInRegex: <span _ngcontent-ng-c629514785=""> Logout </span>
-        loggedOutRegex: <span class="mdc-button__label"> Log in </span>
-        pollFrequency: 60
-        pollUnits: requests
-        pollUrl: ""
-        pollPostData: ""
-    sessionManagement:
-      method: cookie
-    technology: {}
-    structure: {}
-    users:
-    - name: test
-      credentials:
-        password: test@123
-        username: test@123.com
-  parameters: {}
+    contexts:
+    -
+        excludePaths: []
+        includePaths:
+        - https://juice-shop.herokuapp.com/.*
+        name: Default Context
+        technology:
+            exclude: []
+        urls:
+        - https://juice-shop.herokuapp.com/
+        authentication:
+            method: form
+            parameters:
+                loginPageUrl: https://juice-shop.herokuapp.com/#/login
+                loginRequestBody: Email={%username%}&Password={%password%}
+                loginRequestUrl: https://juice-shop.herokuapp.com/#/login
+            verification:
+                method: poll
+                loggedInRegex: <span _ngcontent-ng-c629514785=""> Logout </span>
+                loggedOutRegex: <span class="mdc-button__label"> Log in </span>
+                pollFrequency: 60
+                pollUnits: requests
+                pollUrl: https://juice-shop.herokuapp.com/#/login
+        sessionManagement:
+            method: cookie
+            parameters: {}
+        users:
+        -
+            credentials:
+                password: test@123
+                username: test@123.com
+            name: authentication user
+    vars: {}
+    parameters:
+        failOnError: true
+        failOnWarning: false
+        progressToStdout: true
 jobs:
-- type: passiveScan-config
-  parameters: {}
-  rules:
-  - name: Modern Web Application
-    id: 10109
-    threshold: "off"
-  - name: Re-examine Cache-control Directives
-    id: 10015
-    threshold: "off"
-  - name: Timestamp Disclosure
-    id: 10096
-    threshold: "off"
-  - name: Strict-Transport-Security Header
-    id: 10035
-    threshold: "off"
-  - name: Cross-Domain JavaScript Source File Inclusion
-    id: 10017
-    threshold: "off"
-  - name: Cross-Domain Misconfiguration
-    id: 10098
-    threshold: "off"
-  - name: Content Security Policy (CSP) Header Not Set
-    id: 10038
-    threshold: "off"
-- type: spider
-  parameters:
-    context: Default Context
-    user: test
-    url: https://juice-shop.herokuapp.com
-    parseDsStore: null
-- type: spiderAjax
-  parameters:
-    context: Default Context
-    user: test
-    url: https://juice-shop.herokuapp.com
-    maxDuration: 301
-    browserId: null
-- type: passiveScan-wait
-  parameters: {}
-- type: activeScan
-  parameters:
-    context: Default Context
-    user: test
-  policyDefinition:
-    defaultStrength: medium
-    defaultThreshold: medium
+-
+    parameters:
+        scanOnlyInScope: true
+        enableTags: false
+    rules: []
+    name: passiveScan-config
+    type: passiveScan-config
+-
+    parameters:
+        context: Default Context
+        maxDuration: 0
+        maxDepth: 0
+        maxChildren: 0
+        user: authentication user
+    name: spider
+    type: spider
+-
+    parameters:
+        context: Default Context
+        maxDuration: 60
+        maxCrawlDepth: 10
+        numberOfBrowsers: 4
+        runOnlyIfModern: false
+        user: authentication user
+    name: spiderAjax
+    type: spiderAjax
+-
+    parameters: {}
+    name: passiveScan-wait
+    type: passiveScan-wait
+-
+    parameters:
+        context: Default Context
+        threadPerHost: 4
+        user: authentication user
+    policyDefinition:
+        rules: []
+    name: activeScan
+    type: activeScan
