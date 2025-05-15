@@ -27,3 +27,12 @@ docker run --restart=always -d -p 3000:3000 --name juice-shop bkimminich/juice-s
 # Enable proxy modules in apache and restart
 a2enmod proxy_http
 systemctl restart apache2.service
+
+
+
+
+
+
+
+
+checkmarxASTScanner additionalOptions: '', baseAuthUrl: '', branchName: 'master', checkmarxInstallation: 'CxAST CLI', credentialsId: '', projectName: 'cx-dhruv-s-pathak/juice-shop', serverUrl: '', tenantName: ''

@@ -9,7 +9,6 @@ import { expect } from '@jest/globals'
 import config from 'config'
 
 const REST_URL = 'http://localhost:3000/rest'
-
 const jsonHeader = { ContentType: 'application/json' }
 const authHeader = { Authorization: `Bearer ${security.authorize({ data: { email: 'admin@juice-sh.op' } })}`, 'content-type': 'application/json' }
 
