@@ -17,7 +17,7 @@ pipeline {
 
     triggers {
         // Trigger on push or pull requests to the master branch
-        pollSCM('H/50 * * * *')  // Polling every 5 minutes (adjust as needed)
+        pollSCM('H/1 * * * *')  // Polling every 5 minutes (adjust as needed)
         githubPush()  // Trigger when a push is made to GitHub
     }
 
