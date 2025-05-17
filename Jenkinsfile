@@ -1,10 +1,11 @@
 pipeline {
     agent any
 
+
     environment {
         CX_APIKEY = 'eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5ZDMzNDA4Yy0yMGVjLTQ2ZjgtYWY5ZC1kZTljYmU0MWZlOTIifQ.eyJpYXQiOjE3NDI3MjQyNDEsImp0aSI6IjA2MGZlODE5LTBlN2YtNGNjNS1hOTQxLTM2NjRiMTYzYTQ1MyIsImlzcyI6Imh0dHBzOi8vZXUuaWFtLmNoZWNrbWFyeC5uZXQvYXV0aC9yZWFsbXMvYXN0X2FiZHVsX2Fuc2FyaSIsImF1ZCI6Imh0dHBzOi8vZXUuaWFtLmNoZWNrbWFyeC5uZXQvYXV0aC9yZWFsbXMvYXN0X2FiZHVsX2Fuc2FyaSIsInN1YiI6ImFmNjRhYjUzLWE0NjctNDZhZi1iMDBmLTVjNDI3NmE2YTNjYSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJhc3QtYXBwIiwic2lkIjoiODcwMjU4OWYtNTk0My00MmE4LWI2MjYtMGE3ZWEzNDJmODI5Iiwic2NvcGUiOiJyb2xlcyBwcm9maWxlIGdyb3VwcyBlbWFpbCBpYW0tYXBpIGFzdC1hcGkgb2ZmbGluZV9hY2Nlc3MifQ.aFQgNYbt3lgUbI6kKqIxEzyJWeuXx5zZNqxsYpwaMpaohE9Lk2NEAnVuhqYQfntJZU_FDugHgsRtGhymQ_IRKw'
         BASE_URI = 'https://eu.ast.checkmarx.net'
-        CX_TENANT = 'sudha'
+        CX_TENANT = 'ast_abdul_ansari'
         ENVIRONMENT_ID = '2ee7bc42-a210-4300-9f33-9749781b2feb'
         OUTPUT_DIR = "${WORKSPACE}/output_fold"
         GIT_REPO = 'https://github.com/cx-dhruv-s-pathak/juice-shop.git'
@@ -13,12 +14,6 @@ pipeline {
 
     options {
         timestamps()
-    }
-
-    triggers {
-        // Trigger on push or pull requests to the master branch
-        pollSCM('H/1 * * * *')  // Polling every 5 minutes (adjust as needed)
-        githubPush()  // Trigger when a push is made to GitHub
     }
 
     stages {
@@ -50,7 +45,6 @@ pipeline {
                 echo 'Running Checkmarx DAST Scan...'
         
                 script {
-                    // Use relative path instead of absolute to avoid escaping issues
                     def outputDir = "output_fold"
         
                     bat "if not exist ${outputDir} mkdir ${outputDir}"
@@ -66,7 +60,7 @@ pipeline {
                                 web ^
                                 --base-url=${BASE_URI} ^
                                 --environment-id=${ENVIRONMENT_ID} ^
-                                --config=./juiceshop_automation_zap.yaml ^
+                                --config=/config/juiceshop_automation_zap.yaml ^
                                 --log-level=info ^
                                 --output=/output
                         """.stripIndent(),
@@ -79,5 +73,6 @@ pipeline {
                 }
             }
         }
+
     }
 }
