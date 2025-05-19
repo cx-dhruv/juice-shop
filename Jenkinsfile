@@ -23,56 +23,56 @@ pipeline {
             }
         }
 
-        // stage('Checkmarx AST Scan') {
-        //     steps {
-        //         script {
-        //             checkmarxASTScanner(
-        //                 useOwnAdditionalOptions: true, 
-        //                 additionalOptions: '--sast-incremental=true', 
-        //                 serverUrl: 'https://ind.ast.checkmarx.net/', 
-        //                 baseAuthUrl: 'https://ind.iam.checkmarx.net/', 
-        //                 tenantName: "${env.CX_TENANT}", 
-        //                 branchName: 'master', 
-        //                 checkmarxInstallation: 'CxAST CLI', 
-        //                 projectName: 'cx-dhruv-s-pathak/juice-shop'
-        //             )
-        //         }
-        //     }
-        // }
-
-        stage('Checkmarx DAST Scan') {
+        stage('Checkmarx AST Scan') {
             steps {
-                echo 'Running Checkmarx DAST Scan...'
-        
                 script {
-                    def outputDir = "output_fold"
-        
-                    bat "if not exist ${outputDir} mkdir ${outputDir}"
-        
-                    def ret = bat(
-                        script: """
-                            docker run --rm ^
-                                --user 0 ^
-                                -v %WORKSPACE%:/config ^
-                                -v %WORKSPACE%\\${outputDir}:/output ^
-                                -e CX_APIKEY=${CX_APIKEY} ^
-                                checkmarx/dast:latest ^
-                                web ^
-                                --base-url=${BASE_URI} ^
-                                --environment-id=${ENVIRONMENT_ID} ^
-                                --config=/config/juiceshop_automation_zap.yaml ^
-                                --log-level=info ^
-                                --output=/output
-                        """.stripIndent(),
-                        returnStatus: true
+                    checkmarxASTScanner(
+                        useOwnAdditionalOptions: true, 
+                        additionalOptions: '--sast-incremental=true', 
+                        serverUrl: 'https://ind.ast.checkmarx.net/', 
+                        baseAuthUrl: 'https://ind.iam.checkmarx.net/', 
+                        tenantName: "${env.CX_TENANT}", 
+                        branchName: 'master', 
+                        checkmarxInstallation: 'CxAST CLI', 
+                        projectName: 'cx-dhruv-s-pathak/juice-shop'
                     )
-        
-                    if (ret != 0) {
-                        error("DAST scan failed with exit code ${ret}")
-                    }
                 }
             }
         }
+
+        // stage('Checkmarx DAST Scan') {
+        //     steps {
+        //         echo 'Running Checkmarx DAST Scan...'
+        
+        //         script {
+        //             def outputDir = "output_fold"
+        
+        //             bat "if not exist ${outputDir} mkdir ${outputDir}"
+        
+        //             def ret = bat(
+        //                 script: """
+        //                     docker run --rm ^
+        //                         --user 0 ^
+        //                         -v %WORKSPACE%:/config ^
+        //                         -v %WORKSPACE%\\${outputDir}:/output ^
+        //                         -e CX_APIKEY=${CX_APIKEY} ^
+        //                         checkmarx/dast:latest ^
+        //                         web ^
+        //                         --base-url=${BASE_URI} ^
+        //                         --environment-id=${ENVIRONMENT_ID} ^
+        //                         --config=/config/juiceshop_automation_zap.yaml ^
+        //                         --log-level=info ^
+        //                         --output=/output
+        //                 """.stripIndent(),
+        //                 returnStatus: true
+        //             )
+        
+        //             if (ret != 0) {
+        //                 error("DAST scan failed with exit code ${ret}")
+        //             }
+        //         }
+        //     }
+        //}
 
     }
 }
