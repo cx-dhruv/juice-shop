@@ -43,7 +43,7 @@ jobs:
           # Branch Name
           branch: ${{ github.head_ref || github.ref }}
           # Run in ASYNC mode
-          additional_params: --async
+          additional_params: --async, --threshold sast-high=1 sast-critial=1
 
   # checkmarx-dast:
   #   permissions:
