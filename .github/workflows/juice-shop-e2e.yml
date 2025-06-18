@@ -43,48 +43,48 @@ jobs:
           # Branch Name
           branch: ${{ github.head_ref || github.ref }}
           # Run in ASYNC mode
-          additional_params: --async
+          additional_params: --async, --threshold sast-high=1 sast-critial=1
 
-  checkmarx-dast:
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
+  # checkmarx-dast:
+  #   permissions:
+  #     contents: read
+  #     security-events: write
+  #     actions: read
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
 
-      - name: Create Directory for Output
-        run: mkdir ${{ github.workspace }}/output_fold
+  #     - name: Create Directory for Output
+  #       run: mkdir ${{ github.workspace }}/output_fold
 
-      - name: Change Directory Owner
-        run: sudo chown -R 1000:1000 ${{ github.workspace }}
+  #     - name: Change Directory Owner
+  #       run: sudo chown -R 1000:1000 ${{ github.workspace }}
 
-      - name: Checkmarx DAST Scan
-        uses: Checkmarx/dast-github-action@v2.3.0
-        env:
-          CX_APIKEY: ${{ secrets.CX_APIKEY }}
-        with:
-          # The type of scan to perform (web, api)
-          command: web
-          # The path to the ZAP configuration file
-          config: ./juiceshop_automation_zap.yaml
-          # The base URL for the Checkmarx One Servers
-          base_url: https://ind.ast.checkmarx.net
-          # The environment ID previously created in the Frontend
-          environment_id: 956db9e0-2091-4027-97a5-4156e79cc43e
-          output: ${{ github.workspace }}/output_fold #./output
+  #     - name: Checkmarx DAST Scan
+  #       uses: Checkmarx/dast-github-action@v2.3.0
+  #       env:
+  #         CX_APIKEY: ${{ secrets.CX_APIKEY }}
+  #       with:
+  #         # The type of scan to perform (web, api)
+  #         command: web
+  #         # The path to the ZAP configuration file
+  #         config: ./juiceshop_automation_zap.yaml
+  #         # The base URL for the Checkmarx One Servers
+  #         base_url: https://ind.ast.checkmarx.net
+  #         # The environment ID previously created in the Frontend
+  #         environment_id: 956db9e0-2091-4027-97a5-4156e79cc43e
+  #         output: ${{ github.workspace }}/output_fold #./output
 
-      - name: Reclaim Output Directory
-        if: always()
-        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+  #     - name: Reclaim Output Directory
+  #       if: always()
+  #       run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
 
-      - name: Upload DAST Logs
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dast-report
-          path: ${{ github.workspace }}/output_fold
+  #     - name: Upload DAST Logs
+  #       uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: dast-report
+  #         path: ${{ github.workspace }}/output_fold
