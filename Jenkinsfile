@@ -32,7 +32,8 @@ pipeline {
                         tenantName: "${env.CX_TENANT}", 
                         branchName: 'master', 
                         checkmarxInstallation: 'cxone-ind', 
-                        projectName: 'cx-dhruv/juice-shop'
+                        projectName: 'cx-dhruv/juice-shop',
+                        additionalParameter: '--threshold "sast-high=10; sast-medium=20; sca-high=10; containers-high=5"'
                     )
                 }
             }
